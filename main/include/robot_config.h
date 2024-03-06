@@ -4,6 +4,7 @@
 #define ROBOT_CONFIG_H
 
 #include <Arduino.h>
+#include "servo_config.h"
 
 #define DEBUG
 
@@ -33,6 +34,14 @@ constexpr int PIN_Z_AXIS_SERVO = 9;
 constexpr int PIN_CLAW_SERVO = 8;
 constexpr int PIN_ROTATION_SERVO = 10;
 
+// Servo Limits
+constexpr int SERVO_Z_LOW_LIMIT = 0;
+constexpr int SERVO_Z_HIGH_LIMIT = 180;
+constexpr int SERVO_ROT_LOW_LIMIT = 0;
+constexpr int SERVO_ROT_HIGH_LIMIT = 180;
+constexpr int SERVO_GRIP_LOW_LIMIT = 0;
+constexpr int SERVO_GRIP_HIGH_LIMIT = 90;
+
 // Servo current sensor pin and threshold
 constexpr int PIN_CURRENT_SENSOR_GRIP = 14; 
 constexpr int PIN_CURRENT_SENSOR_Z_AXIS = 15; 
@@ -45,14 +54,6 @@ constexpr int STEPS_PER_REVOLITION = 200 * 16;          // 200 steps/rev * 16x m
 constexpr int STEPS_PER_MM = STEPS_PER_REVOLITION / 40; // 40mm/rev
 constexpr float MM_PER_ENCODER_PULSES = 40.0f / ENCODER_PULSES_PER_REVOLUTION;
 constexpr int PULSE_WIDTH = 150; // was 100, changed to remove jerk   //step pulse-width (uS)
-
-// Servo calibrated pulse widths
-constexpr int SERVO_CLAW_LOW_PULSE_WIDTH = 584;
-constexpr int SERVO_CLAW_HIGH_PULSE_WIDTH = 2559;
-constexpr int SERVO_Z_LOW_PULSE_WIDTH = 584;
-constexpr int SERVO_Z_HIGH_PULSE_WIDTH = 2559;
-constexpr int SERVO_ROT_LOW_PULSE_WIDTH = 584;
-constexpr int SERVO_ROT_HIGH_PULSE_WIDTH = 2559;
 
 // Switch definition
 constexpr bool NORMAL_SWITCH_STATE = 0;
