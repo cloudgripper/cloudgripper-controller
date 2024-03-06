@@ -28,7 +28,7 @@ void menu()
 }
 
 // Parse Serial Input
-RobotCommand parseRobotCommand(String string, Robot &robot)
+RobotCommand parseRobotCommand(String string)
 {
     String inputString = string;
     String subString;
