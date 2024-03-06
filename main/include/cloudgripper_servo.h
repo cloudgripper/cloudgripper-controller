@@ -23,7 +23,6 @@ public:
     // Member functions
     void setupCurrentSensor(uint8_t pin);
     void setAngle(uint8_t angle);
-    void setAngleSmooth(uint8_t targetAngle, uint32_t durationMs);
     uint8_t getAngle() const;
 
 private:
@@ -35,7 +34,7 @@ private:
     uint8_t currentAngle = 0;
 
     // Member function
-    float easeInOutCubic(float t);
+    void moveServo(uint8_t newAngle);
 };
 
 #endif // ROBOTSERVO_H

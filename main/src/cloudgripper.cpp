@@ -101,11 +101,11 @@ void Robot::stepMotors()
 }
 
 // Function to set the Gripper rotation
-void Robot::rotateGripper(int angle) { rotationServo.setAngleSmooth(angle, 500); }
+void Robot::rotateGripper(int angle) { rotationServo.setAngle(angle); }
 // Function to set the Gripper claw position
-void Robot::openCloseGripper(int angle) { clawServo.setAngleSmooth(angle, 500); }
+void Robot::openCloseGripper(int angle) { clawServo.setAngle(angle); }
 // Function to set the Gripper Z-axis position
-void Robot::upDownGripper(int angle) { zaxisServo.setAngleSmooth(angle, 500); }
+void Robot::upDownGripper(int angle) { zaxisServo.setAngle(angle); }
 
 void Robot::calibrate()
 {
