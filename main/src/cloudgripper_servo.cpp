@@ -13,7 +13,7 @@ void RobotServo::setAngle(uint8_t angle){
   this->currentAngle = currentAngle;
 }
 
-void RobotServo::moveServo(int newAngle)
+void RobotServo::moveServo(uint8_t newAngle)
 {
   // calculate the pulse width for the desired position
   uint32_t pulseWidth = map(newAngle, 0, 180, lowServoPulseWidth, highServoPulseWidth);
