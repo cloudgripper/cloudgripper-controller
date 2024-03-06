@@ -111,7 +111,7 @@ void Robot::calibrate()
 {
     // Set gripper to certain state before calibrating
     rotateGripper(0);
-    openCloseGripper(90);
+    openCloseGripper(0);
     upDownGripper(0);
 
     // Move right till calibration switch is pressed
