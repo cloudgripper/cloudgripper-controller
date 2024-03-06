@@ -45,6 +45,7 @@ LimitSwitch yLimitSwitch(PIN_Y_SWITCH);
 CurrentSensor *sensor_claw = new CurrentSensor(PIN_CURRENT_SENSOR_GRIP);
 CurrentSensor *sensor_z_axis = new CurrentSensor(PIN_CURRENT_SENSOR_Z_AXIS);
 CurrentSensor *sensor_rotation = new CurrentSensor(PIN_CURRENT_SENSOR_ROTATION);
+CurrentSensor* sensor_ref = new CurrentSensor(PIN_CURRENT_REFERENCE);
 
 /*
   Innitialize Actuators

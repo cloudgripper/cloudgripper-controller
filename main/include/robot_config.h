@@ -46,7 +46,7 @@ constexpr int SERVO_GRIP_HIGH_LIMIT = 90;
 constexpr int PIN_CURRENT_SENSOR_GRIP = 14; 
 constexpr int PIN_CURRENT_SENSOR_Z_AXIS = 15; 
 constexpr int PIN_CURRENT_SENSOR_ROTATION = 16;
-constexpr float CURRENT_THRESHOLD = 1.0;
+constexpr int PIN_CURRENT_REFERENCE = 17;
 
 // Motor parameters
 constexpr int ENCODER_PULSES_PER_REVOLUTION = 4000;     // 4000 encoder_pulses / rev
