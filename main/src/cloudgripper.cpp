@@ -39,44 +39,6 @@ void Robot::moveTo(float x, float y)
     int stepsToSetLeftMotor = int((float(leftEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
     int stepsToSetRightMotor = int((float(rightEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
 
-    // Correct error if motor got stuck
-    if (abs(leftEncoderPosition - goalPosL) > 5 || abs(rightEncoderPosition - goalPosR) > 5)
-    {
-        // Set stepper position to the one calculated from encoders
-        leftStepper.setPosition(stepsToSetLeftMotor);
-        rightStepper.setPosition(stepsToSetRightMotor);
-
-        for (int i = 0; i < 4; i++)
-        {
-            // Try to Move the stepper back to the intended position
-            rightStepper.setTargetAbs(motorRightSteps);
-            leftStepper.setTargetAbs(motorLeftSteps);
-            stepperGroup.move();
-            delay(10);
-
-            // Read encoder position
-            leftEncoderPosition = -1 * leftStepperEncoder.read();
-            rightEncoderPosition = rightStepperEncoder.read();
-
-            // If encoder at desired position break the loop
-            if (abs(leftEncoderPosition - goalPosL) < 5 && abs(rightEncoderPosition - goalPosR) < 5)
-            {
-                break;
-            }
-
-            if (i == 3)
-            {
-                Serial.println("ERROR: COLLISION DETECTED");
-            }
-
-            // Motor got stuck again. Calculate and set the stepper's actual position
-            stepsToSetLeftMotor = int((float(leftEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
-            stepsToSetRightMotor = int((float(rightEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
-            leftStepper.setPosition(stepsToSetLeftMotor);
-            rightStepper.setPosition(stepsToSetRightMotor);
-        }
-    }
-
     // Remember last co-ordinate
     // this->robotXposition = newRobotX;
     // this->robotYposition = newRobotY;
