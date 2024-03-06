@@ -1,3 +1,6 @@
 [submodule "main/lib/ADC"]
 	path = main/lib/ADC
 	url = https://github.com/pedvide/ADC.git
+[submodule "main/lib/TeensyStepper4"]
+	path = main/lib/TeensyStepper4
+	url = https://github.com/Zahidilyas/TeensyStep4
