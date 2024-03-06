@@ -121,7 +121,7 @@ void loop()
   if (robotCommandString.length() > 0)
   {
     // Parse robot command
-    RobotCommand command = parseRobotCommand(robotCommandString, robot);
+    RobotCommand command = parseRobotCommand(robotCommandString);
 
     // Execute robot command
     executeRobotCommand(command, robot);
