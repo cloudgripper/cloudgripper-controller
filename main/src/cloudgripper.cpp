@@ -156,11 +156,17 @@ void Robot::calibrate()
     while (xLimitSwitch.read() == NORMAL_SWITCH_STATE)
     {
         stepRobotPosition("right");
+        while(rightStepper.isMoving || leftStepper.isMoving){
+            delay(2);
+        }
     }
     // Move backwards till calibration switch is pressed
     while (yLimitSwitch.read() == NORMAL_SWITCH_STATE)
     {
         stepRobotPosition("backward");
+        while(rightStepper.isMoving || leftStepper.isMoving){
+            delay(2);
+        }
     }
 
     // Set the robot position to (0,0)
