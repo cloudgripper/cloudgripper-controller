@@ -87,8 +87,8 @@ void setup()
       .setAcceleration(30'000);
 
   // Set initial stpper pin states
-  digitalWrite(DIR_PIN_RIGHT_STEPPER, CW);
-  digitalWrite(DIR_PIN_LEFT_STEPPER, CW);
+  digitalWrite(DIR_PIN_RIGHT_STEPPER, CCW);
+  digitalWrite(DIR_PIN_LEFT_STEPPER, CCW);
   digitalWrite(STEP_PIN_RIGHT_STEPPER, LOW);
   digitalWrite(STEP_PIN_LEFT_STEPPER, LOW);
   digitalWrite(ENABLE_PIN, LOW);
