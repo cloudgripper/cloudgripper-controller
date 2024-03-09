@@ -157,6 +157,11 @@ RobotCommand parseRobotCommand(String string)
     {
         command.stepDistance -= 1;
     }
+    // Detect state request
+    else if (inputString.startsWith("S"))
+    {
+        command.type = RobotCommand::GET_STATE;
+    }
 
     return command;
 }

@@ -100,6 +100,42 @@ void Robot::openCloseGripper(int angle) { clawServo.setAngle(angle); }
 // Function to set the Gripper Z-axis position
 void Robot::upDownGripper(int angle) { zaxisServo.setAngle(angle); }
 
+void Robot::printState() {
+    
+    // Read new encoder position
+    long rightEncoderPosition =  (IS_ENCODER_RIGHT_WIRING_REVERSED  ? -1 : 1) * rightStepperEncoder.read();
+    long leftEncoderPosition =  (IS_ENCODER_LEFT_WIRING_REVERSED ? -1 : 1) * leftStepperEncoder.read();
+
+    // Calculate stepper position corresponding to new encoder position
+    long rightStepsMeasured  = long((float(rightEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLUTION));
+    long leftStepsMeasured  = long((float(leftEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLUTION));
+    
+    long newRobotXMeasured  = (leftStepsMeasured + rightStepsMeasured) / 2;
+    long newRobotYMeasured  = (leftStepsMeasured - rightStepsMeasured) / 2;
+
+    float xMeasured = newRobotXMeasured  / (float)STEPS_PER_MM;
+    float yMeasured = newRobotYMeasured  / (float)STEPS_PER_MM;
+
+    // Send over serial in a human-readable format
+    // x, y, z_angle, rotation_angle, claw_angle, z_current, rotation_current, claw_current, rotation_current
+    Serial.print("STATE ");
+    Serial.print(xMeasured);
+    Serial.print(" ");
+    Serial.print(yMeasured);
+    Serial.print(" ");
+    Serial.print(zaxisServo.getAngle());
+    Serial.print(" ");
+    Serial.print(rotationServo.getAngle());
+    Serial.print(" ");
+    Serial.print(clawServo.getAngle());
+    Serial.print(" ");
+    Serial.print(zaxisServo.getCurrent());
+    Serial.print(" ");
+    Serial.print(rotationServo.getCurrent());
+    Serial.print(" ");
+    Serial.println(clawServo.getCurrent());
+}
+
 void Robot::calibrate()
 {
     // Set gripper to certain state before calibrating

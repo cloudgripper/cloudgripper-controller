@@ -156,6 +156,9 @@ void executeRobotCommand(RobotCommand command, Robot &robot)
   case RobotCommand::STEP:
     robot.stepRobotPosition(command.direction, command.stepDistance);
     break;
+
+  case RobotCommand::GET_STATE:
+    robot.printState();
   }
 }
 
