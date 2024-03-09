@@ -19,6 +19,7 @@
 #include "cloudgripper.h"
 #include "robot_command.h"
 #include "current_sensor.h"
+#include "servo_config.h"
 
 // CoreXY variables
 // XY robot position (integer steps)
