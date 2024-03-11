@@ -4,9 +4,8 @@
 #define ROBOT_CONFIG_H
 
 #include <Arduino.h>
-#include "servo_config.h"
 
-#define DEBUG
+// #define DEBUG
 
 // Stepper motor pins
 constexpr int ENABLE_PIN = 8;
@@ -18,6 +17,10 @@ constexpr int STEP_PIN_LEFT_STEPPER = 3;
 // Motor wiring
 constexpr bool IS_MOTOR_RIGHT_WIRING_REVERSED = true;
 constexpr bool IS_MOTOR_LEFT_WIRING_REVERSED = false;
+
+// Encoder wiring
+constexpr bool IS_ENCODER_RIGHT_WIRING_REVERSED = true;
+constexpr bool IS_ENCODER_LEFT_WIRING_REVERSED = true;
 
 // Stepper Encoder pins
 constexpr int A_CHANNEL_RIGHT_STEPPER_ENCODER = 28;
@@ -50,8 +53,8 @@ constexpr int PIN_CURRENT_REFERENCE = 17;
 
 // Motor parameters
 constexpr int ENCODER_PULSES_PER_REVOLUTION = 4000;     // 4000 encoder_pulses / rev
-constexpr int STEPS_PER_REVOLITION = 200 * 16;          // 200 steps/rev * 16x microstepping
-constexpr int STEPS_PER_MM = STEPS_PER_REVOLITION / 40; // 40mm/rev
+constexpr int STEPS_PER_REVOLUTION = 200 * 16;          // 200 steps/rev * 16x microstepping
+constexpr int STEPS_PER_MM = STEPS_PER_REVOLUTION / 40; // 40mm/rev
 constexpr float MM_PER_ENCODER_PULSES = 40.0f / ENCODER_PULSES_PER_REVOLUTION;
 constexpr int PULSE_WIDTH = 150; // was 100, changed to remove jerk   //step pulse-width (uS)
 

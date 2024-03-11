@@ -1,4 +1,5 @@
 #include "cloudgripper.h"
+#include "robot_config.h"
 
 Robot::Robot(RobotServo &clawServo, RobotServo &zaxisServo, RobotServo &rotationServo,
              TS4::Stepper &rightStepper, TS4::Stepper &leftStepper, TS4::StepperGroup &stepperGroup,
@@ -18,26 +19,18 @@ void Robot::moveTo(float x, float y)
     // Calculate target motor steps
     int motorRightSteps;
     int motorLeftSteps;
-    motorRightSteps = (IS_MOTOR_RIGHT_WIRING_REVERSED ? -1 : 1) * (-1 * newRobotX + -1 * newRobotY);
-    motorLeftSteps = (IS_MOTOR_LEFT_WIRING_REVERSED ? -1 : 1) * (-1 * newRobotX + 1 * newRobotY);
+    motorRightSteps = (newRobotX - newRobotY);
+    motorLeftSteps = (newRobotX + newRobotY);
 
     // Calculate target encoder position
-    long goalPosL = int((float(motorLeftSteps) / float(STEPS_PER_REVOLITION)) * float(ENCODER_PULSES_PER_REVOLUTION));
-    long goalPosR = int((float(motorRightSteps) / float(STEPS_PER_REVOLITION)) * float(ENCODER_PULSES_PER_REVOLUTION));
+    long goalPosL = int((float(motorLeftSteps) / float(STEPS_PER_REVOLUTION)) * float(ENCODER_PULSES_PER_REVOLUTION));
+    long goalPosR = int((float(motorRightSteps) / float(STEPS_PER_REVOLUTION)) * float(ENCODER_PULSES_PER_REVOLUTION));
 
     // Move motors to target position
-    rightStepper.setTargetAbs(motorRightSteps);
-    leftStepper.setTargetAbs(motorLeftSteps);
+    rightStepper.setTargetAbs((IS_MOTOR_RIGHT_WIRING_REVERSED ? -1 : 1) * motorRightSteps);
+    leftStepper.setTargetAbs((IS_MOTOR_LEFT_WIRING_REVERSED ? -1 : 1) * motorLeftSteps);
     stepperGroup.move();
     delay(5);
-
-    // Read new encoder position
-    long leftEncoderPosition = -1 * leftStepperEncoder.read();
-    long rightEncoderPosition = rightStepperEncoder.read();
-
-    // Calculate stepper position corresponding to new encoder position
-    int stepsToSetLeftMotor = int((float(leftEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
-    int stepsToSetRightMotor = int((float(rightEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
 
     // Remember last co-ordinate
     // this->robotXposition = newRobotX;
@@ -55,11 +48,11 @@ void Robot::stepRobotPosition(String direction, float stepDistance = 1)
     // Step to the correct direction using moveTo function
     if (direction == "right")
     {
-        moveTo(this->robotXposition - stepDistance, this->robotYposition);
+        moveTo(this->robotXposition + stepDistance, this->robotYposition);
     }
     if (direction == "left")
     {
-        moveTo(this->robotXposition + stepDistance, this->robotYposition);
+        moveTo(this->robotXposition - stepDistance, this->robotYposition);
     }
     if (direction == "forward")
     {
@@ -80,8 +73,8 @@ void Robot::fixPositionUsingEncoder()
     // Set stepper position to match the encoder position
     long leftEncoderPosition = -1 * leftStepperEncoder.read();
     long rightEncoderPosition = rightStepperEncoder.read();
-    int stepsToSetLeftMotor = int((float(leftEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
-    int stepsToSetRightMotor = int((float(rightEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLITION));
+    int stepsToSetLeftMotor = int((float(leftEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLUTION));
+    int stepsToSetRightMotor = int((float(rightEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLUTION));
 
     leftStepper.setPosition(stepsToSetLeftMotor);
     rightStepper.setPosition(stepsToSetRightMotor);
@@ -107,6 +100,42 @@ void Robot::openCloseGripper(int angle) { clawServo.setAngle(angle); }
 // Function to set the Gripper Z-axis position
 void Robot::upDownGripper(int angle) { zaxisServo.setAngle(angle); }
 
+void Robot::printState() {
+    
+    // Read new encoder position
+    long rightEncoderPosition =  (IS_ENCODER_RIGHT_WIRING_REVERSED  ? -1 : 1) * rightStepperEncoder.read();
+    long leftEncoderPosition =  (IS_ENCODER_LEFT_WIRING_REVERSED ? -1 : 1) * leftStepperEncoder.read();
+
+    // Calculate stepper position corresponding to new encoder position
+    long rightStepsMeasured  = long((float(rightEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLUTION));
+    long leftStepsMeasured  = long((float(leftEncoderPosition) / float(ENCODER_PULSES_PER_REVOLUTION)) * float(STEPS_PER_REVOLUTION));
+    
+    long newRobotXMeasured  = (leftStepsMeasured + rightStepsMeasured) / 2;
+    long newRobotYMeasured  = (leftStepsMeasured - rightStepsMeasured) / 2;
+
+    float xMeasured = newRobotXMeasured  / (float)STEPS_PER_MM;
+    float yMeasured = newRobotYMeasured  / (float)STEPS_PER_MM;
+
+    // Send over serial in a human-readable format
+    // x, y, z_angle, rotation_angle, claw_angle, z_current, rotation_current, claw_current, rotation_current
+    Serial.print("STATE ");
+    Serial.print(xMeasured);
+    Serial.print(" ");
+    Serial.print(yMeasured);
+    Serial.print(" ");
+    Serial.print(zaxisServo.getAngle());
+    Serial.print(" ");
+    Serial.print(rotationServo.getAngle());
+    Serial.print(" ");
+    Serial.print(clawServo.getAngle());
+    Serial.print(" ");
+    Serial.print(zaxisServo.getCurrent());
+    Serial.print(" ");
+    Serial.print(rotationServo.getCurrent());
+    Serial.print(" ");
+    Serial.println(clawServo.getCurrent());
+}
+
 void Robot::calibrate()
 {
     // Set gripper to certain state before calibrating
@@ -130,7 +159,6 @@ void Robot::calibrate()
             delay(2);
         }
     }
-
     // Set the robot position to (0,0)
     this->robotXposition = 0;
     this->robotYposition = 0;

@@ -28,6 +28,7 @@ public:
     void rotateGripper(int angle);
     void openCloseGripper(int angle);
     void upDownGripper(int angle);
+    void printState();
     void calibrate();
 
 private:

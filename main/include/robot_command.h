@@ -13,6 +13,7 @@ struct RobotCommand {
     CALIBRATE,
     STEP_DISTANCE_INCREMENT,
     STEP_DISTANCE_DECREMENT,
+    GET_STATE,
     NONE // Default, no command
   } type = NONE;
 

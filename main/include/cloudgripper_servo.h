@@ -24,6 +24,7 @@ public:
     void setupCurrentSensor(uint8_t pin);
     void setAngle(uint8_t angle);
     uint8_t getAngle() const;
+    float getCurrent() const;
 
 private:
     // private variables

@@ -31,3 +31,8 @@ uint8_t RobotServo::getAngle() const{
   return this->currentAngle;
 }
 
+float RobotServo::getCurrent() const
+{
+  return currentSensor->readCurrentAvg();
+}
+
