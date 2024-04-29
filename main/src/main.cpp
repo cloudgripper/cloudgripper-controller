@@ -107,6 +107,9 @@ void setup()
   Serial.flush(); // clear TX buffer
   serialFlush();  // clear RX buffer
 
+  // Calibrate
+  robot.calibrate();
+
   // Display commands
   menu();
 }
